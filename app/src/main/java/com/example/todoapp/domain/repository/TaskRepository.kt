@@ -9,4 +9,6 @@ interface TaskRepository {
 
     fun getAllTasks(): Flow<List<Task>>
     suspend fun changeTaskCompletionStatus(id: Long, isCompleted: Boolean)
+    suspend fun updateTask(task: Task)
+
 }

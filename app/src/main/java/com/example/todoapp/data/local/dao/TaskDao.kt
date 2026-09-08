@@ -3,6 +3,7 @@ package com.example.todoapp.data.local.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.todoapp.data.local.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,5 +20,8 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY isCompleted ASC, createdAt DESC")
     fun getAllTasks(): Flow<List<TaskEntity>>
+
+    @Update
+    suspend fun updateTask(task: TaskEntity)
 
 }
