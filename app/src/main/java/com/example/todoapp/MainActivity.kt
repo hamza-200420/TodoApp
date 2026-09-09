@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
+import com.example.todoapp.presentation.ProjectScreen
 import com.example.todoapp.ui.theme.TodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
             TodoAppTheme {
                 val navController = rememberNavController()
                 SetupNavGraph(navController = navController)
+//                ProjectScreen()
             }
         }
     }

@@ -22,11 +22,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -156,6 +158,7 @@ fun HomeScreen(
                     ) { task ->
 
                         TaskItem(
+                            id = task.id,
                             title = task.title,
                             isCompleted = task.isCompleted,
                             onCheckedChange = { checked ->
@@ -168,6 +171,7 @@ fun HomeScreen(
                             onClick = {
                                 onTaskClick(task.id)
                             },
+                            onDelete = { id -> viewModel.deleteTask(id) }
                         )
 
                         HorizontalDivider(
@@ -201,6 +205,7 @@ fun HomeScreen(
                     ) { task ->
 
                         TaskItem(
+                            id = task.id,
                             title = task.title,
                             isCompleted = task.isCompleted,
 
@@ -215,6 +220,7 @@ fun HomeScreen(
                             onClick = {
                                 onTaskClick(task.id)
                             },
+                            onDelete = { id -> viewModel.deleteTask(id) }
                         )
 
                         HorizontalDivider(
@@ -322,10 +328,12 @@ fun ScrollingCalendarWidget(
 
 @Composable
 fun TaskItem(
+    id: Long,
     title: String,
     isCompleted: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     onClick: () -> Unit,
+    onDelete: (Long) -> Unit
 ) {
 
     Row(
@@ -366,5 +374,17 @@ fun TaskItem(
                     Color.Black
                 }
         )
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(
+            onClick = {
+                onDelete(id)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "Delete project",
+                tint = Color.Red
+            )
+        }
     }
 }

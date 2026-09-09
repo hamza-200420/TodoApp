@@ -2,6 +2,7 @@ package com.example.todoapp.domain.model
 
 data class Task(
     val id: Long,
+    val projectId: Long,
     val title: String,
     val description: String,
     val isCompleted: Boolean = false,

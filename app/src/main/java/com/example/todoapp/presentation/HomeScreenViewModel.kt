@@ -1,11 +1,15 @@
 package com.example.todoapp.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.domain.model.Task
 import com.example.todoapp.domain.usecase.ChangeTaskCompletionStatusUseCase
+import com.example.todoapp.domain.usecase.DeleteTaskUseCase
 import com.example.todoapp.domain.usecase.GetAllTasksUseCase
+import com.example.todoapp.domain.usecase.GetTasksByProjectIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,11 +23,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val getTasksUseCase: GetAllTasksUseCase,
-    private val toggleTaskCompletionUseCase: ChangeTaskCompletionStatusUseCase
+    private val getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase,
+    private val toggleTaskCompletionUseCase: ChangeTaskCompletionStatusUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
+    private val projectId: Long = checkNotNull(savedStateHandle["projectId"])
 
     init {
         retrieveAllTasks()
@@ -31,7 +39,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun retrieveAllTasks() {
         viewModelScope.launch {
-            getTasksUseCase().collect { tasks ->
+            getTasksByProjectIdUseCase(projectId).collect { tasks ->
                 _uiState.update { currentState ->
                     val filteredTasks = filterTasksByDate(
                         tasks = tasks,
@@ -94,6 +102,12 @@ class HomeScreenViewModel @Inject constructor(
                 id = id,
                 isCompleted = isCompleted
             )
+        }
+    }
+
+    fun deleteTask(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteTaskUseCase(id)
         }
     }
 }

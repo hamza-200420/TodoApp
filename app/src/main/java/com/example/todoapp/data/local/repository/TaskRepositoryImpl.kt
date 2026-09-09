@@ -23,10 +23,21 @@ class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao) : Tas
     }
 
     override suspend fun changeTaskCompletionStatus(id: Long, isCompleted: Boolean) {
-        taskDao.changeTaskCompletionStatus(id,isCompleted)
+        taskDao.changeTaskCompletionStatus(id, isCompleted)
     }
 
     override suspend fun updateTask(task: Task) {
         taskDao.updateTask(task.toEntity())
+    }
+
+    override fun getTasksByProjectId(id: Long): Flow<List<Task>> {
+        return taskDao.getTasksByProjectId(id)
+            .map { entities ->
+                entities.map { it.toDomain() }
+            }
+    }
+
+    override suspend fun deleteTask(id: Long) {
+        taskDao.deleteTask(id)
     }
 }

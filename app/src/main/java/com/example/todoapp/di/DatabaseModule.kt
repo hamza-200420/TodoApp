@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 import com.example.todoapp.data.local.TodoDatabase
+import com.example.todoapp.data.local.dao.ProjectDao
 import com.example.todoapp.data.local.dao.TaskDao
 
 @Module
@@ -34,5 +35,12 @@ object DatabaseModule {
         database: TodoDatabase
     ): TaskDao {
         return database.taskDao()
+    }
+
+    @Provides
+    fun provideProjectDao(
+        database: TodoDatabase
+    ): ProjectDao {
+        return database.projectDao()
     }
 }

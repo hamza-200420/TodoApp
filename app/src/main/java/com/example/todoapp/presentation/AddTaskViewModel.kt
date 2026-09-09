@@ -30,7 +30,8 @@ class AddTaskViewModel @Inject constructor(
 
     private val taskId: Long? =
         savedStateHandle.get<Long>("taskId")
-
+    private val projectId: Long? =
+        savedStateHandle.get<Long>("projectId")
     init {
         onScreenOpen()
     }
@@ -101,6 +102,7 @@ class AddTaskViewModel @Inject constructor(
                     updateTaskUseCase(
                         Task(
                             id = taskId,
+                            projectId = existingTask.projectId,
                             title = _uiState.value.title,
                             description = _uiState.value.details,
                             isCompleted = existingTask.isCompleted,
@@ -123,6 +125,7 @@ class AddTaskViewModel @Inject constructor(
                     addTaskUseCase(
                         Task(
                             id = 0,
+                            projectId = projectId!!,
                             title = _uiState.value.title,
                             description = _uiState.value.details,
                             isCompleted = false,

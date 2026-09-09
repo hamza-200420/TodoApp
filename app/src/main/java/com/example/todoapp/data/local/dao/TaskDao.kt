@@ -24,4 +24,11 @@ interface TaskDao {
     @Update
     suspend fun updateTask(task: TaskEntity)
 
+    @Query("SELECT * FROM tasks WHERE projectId = :projectId")
+    fun getTasksByProjectId(projectId: Long): Flow<List<TaskEntity>>
+
+
+    @Query("DELETE FROM tasks WHERE id = :taskId")
+    suspend fun deleteTask(taskId: Long)
 }
+

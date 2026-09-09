@@ -11,4 +11,7 @@ interface TaskRepository {
     suspend fun changeTaskCompletionStatus(id: Long, isCompleted: Boolean)
     suspend fun updateTask(task: Task)
 
+    fun getTasksByProjectId(id: Long): Flow<List<Task>>
+    suspend fun deleteTask(id:Long)
+
 }
