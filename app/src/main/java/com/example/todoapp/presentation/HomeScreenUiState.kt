@@ -9,5 +9,5 @@ data class HomeScreenUiState(
     val pendingTasks: List<Task> = emptyList(),
     val completedTasks: List<Task> = emptyList(),
     val selectedDate: LocalDate? = null,
-    val error: String? = null
+    val error: String? = null,
 )

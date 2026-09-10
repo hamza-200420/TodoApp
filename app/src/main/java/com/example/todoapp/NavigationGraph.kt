@@ -36,7 +36,7 @@ fun SetupNavGraph(navController: NavHostController) {
             )
         }
         composable(NavRoutes.ADD_PROJECT) {
-            AddProject(onNavigateBack = { navController.navigate(NavRoutes.PROJECT_HOME) })
+            AddProject(onNavigateBack = {navController.popBackStack() })
         }
 
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.todoapp.domain.model.Task
 import com.example.todoapp.domain.usecase.ChangeTaskCompletionStatusUseCase
 import com.example.todoapp.domain.usecase.DeleteTaskUseCase
-import com.example.todoapp.domain.usecase.GetAllTasksUseCase
+//import com.example.todoapp.domain.usecase.GetAllTasksUseCase
 import com.example.todoapp.domain.usecase.GetTasksByProjectIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val getTasksUseCase: GetAllTasksUseCase,
+//    private val getTasksUseCase: GetAllTasksUseCase,
     private val getTasksByProjectIdUseCase: GetTasksByProjectIdUseCase,
     private val toggleTaskCompletionUseCase: ChangeTaskCompletionStatusUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
@@ -39,6 +39,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun retrieveAllTasks() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
             getTasksByProjectIdUseCase(projectId).collect { tasks ->
                 _uiState.update { currentState ->
                     val filteredTasks = filterTasksByDate(

@@ -6,6 +6,7 @@ import com.example.todoapp.domain.usecase.DeleteProjectUseCase
 import com.example.todoapp.domain.usecase.GetAllProjectsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,10 +30,14 @@ class ProjectScreenViewModel @Inject constructor(
 
     private fun loadProjects() {
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            delay(2000)
             getAllProjectsUseCase().collect { projects ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        projects = projects
+                        projects = projects,
+                        isLoading = false
+
                     )
                 }
             }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -130,107 +131,111 @@ fun HomeScreen(
                 .fillMaxWidth()
         ) {
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                contentPadding = PaddingValues(vertical = 4.dp)
-            ) {
+            if (uiState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    contentPadding = PaddingValues(vertical = 4.dp)
+                ) {
 
-                if (uiState.pendingTasks.isNotEmpty()) {
+                    if (uiState.pendingTasks.isNotEmpty()) {
 
-                    item {
+                        item {
 
-                        Text(
-                            text = "Pending",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF0560FA),
-                            modifier = Modifier.padding(
-                                top = 4.dp,
-                                bottom = 8.dp
-                            )
-                        )
-                    }
-
-                    items(
-                        items = uiState.pendingTasks,
-                        key = { task -> task.id }
-                    ) { task ->
-
-                        TaskItem(
-                            id = task.id,
-                            title = task.title,
-                            isCompleted = task.isCompleted,
-                            onCheckedChange = { checked ->
-                                viewModel.onTaskCheckedChange(
-                                    id = task.id,
-                                    isCompleted = checked
+                            Text(
+                                text = "Pending",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF0560FA),
+                                modifier = Modifier.padding(
+                                    top = 4.dp,
+                                    bottom = 8.dp
                                 )
-                            },
-
-                            onClick = {
-                                onTaskClick(task.id)
-                            },
-                            onDelete = { id -> viewModel.deleteTask(id) }
-                        )
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = Color.LightGray,
-                            modifier = Modifier.padding(
-                                top = 20.dp,
-                                bottom = 20.dp
                             )
-                        )
-                    }
-                }
+                        }
 
-                if (uiState.completedTasks.isNotEmpty()) {
-                    item {
-                        Text(
-                            text = "Completed",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Gray,
-                            modifier = Modifier.padding(
-                                top = 16.dp,
-                                bottom = 8.dp
+                        items(
+                            items = uiState.pendingTasks,
+                            key = { task -> task.id }
+                        ) { task ->
+
+                            TaskItem(
+                                id = task.id,
+                                title = task.title,
+                                isCompleted = task.isCompleted,
+                                onCheckedChange = { checked ->
+                                    viewModel.onTaskCheckedChange(
+                                        id = task.id,
+                                        isCompleted = checked
+                                    )
+                                },
+
+                                onClick = {
+                                    onTaskClick(task.id)
+                                },
+                                onDelete = { id -> viewModel.deleteTask(id) }
                             )
-                        )
-                    }
 
-                    items(
-                        items = uiState.completedTasks,
-                        key = { task -> task.id }
-                    ) { task ->
-
-                        TaskItem(
-                            id = task.id,
-                            title = task.title,
-                            isCompleted = task.isCompleted,
-
-                            onCheckedChange = { checked ->
-
-                                viewModel.onTaskCheckedChange(
-                                    id = task.id,
-                                    isCompleted = checked
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = Color.LightGray,
+                                modifier = Modifier.padding(
+                                    top = 20.dp,
+                                    bottom = 20.dp
                                 )
-                            },
-
-                            onClick = {
-                                onTaskClick(task.id)
-                            },
-                            onDelete = { id -> viewModel.deleteTask(id) }
-                        )
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = Color.LightGray,
-                            modifier = Modifier.padding(
-                                top = 20.dp,
-                                bottom = 20.dp
                             )
-                        )
+                        }
+                    }
+
+                    if (uiState.completedTasks.isNotEmpty()) {
+                        item {
+                            Text(
+                                text = "Completed",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(
+                                    top = 16.dp,
+                                    bottom = 8.dp
+                                )
+                            )
+                        }
+
+                        items(
+                            items = uiState.completedTasks,
+                            key = { task -> task.id }
+                        ) { task ->
+
+                            TaskItem(
+                                id = task.id,
+                                title = task.title,
+                                isCompleted = task.isCompleted,
+
+                                onCheckedChange = { checked ->
+
+                                    viewModel.onTaskCheckedChange(
+                                        id = task.id,
+                                        isCompleted = checked
+                                    )
+                                },
+
+                                onClick = {
+                                    onTaskClick(task.id)
+                                },
+                                onDelete = { id -> viewModel.deleteTask(id) }
+                            )
+
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = Color.LightGray,
+                                modifier = Modifier.padding(
+                                    top = 20.dp,
+                                    bottom = 20.dp
+                                )
+                            )
+                        }
                     }
                 }
             }

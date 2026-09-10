@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -97,25 +98,29 @@ fun ProjectScreen(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(bottom = 60.dp)
-            ) {
-                items(
-                    items = uiState.projects,
-                    key = { project -> project.id }
-                ) { project ->
+            if (uiState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(bottom = 60.dp)
+                ) {
+                    items(
+                        items = uiState.projects,
+                        key = { project -> project.id }
+                    ) { project ->
 
-                    ProjectItem(
-                        project = project,
-                        onDeleteClick = { projectId ->
-                            viewModel.deleteProject(projectId)
-                        },
-                        onClick = { projectId ->
-                            onProjectClick(projectId)
-                        }
-                    )
+                        ProjectItem(
+                            project = project,
+                            onDeleteClick = { projectId ->
+                                viewModel.deleteProject(projectId)
+                            },
+                            onClick = { projectId ->
+                                onProjectClick(projectId)
+                            }
+                        )
+                    }
                 }
             }
 
